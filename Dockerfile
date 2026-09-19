@@ -1,4 +1,4 @@
-```dockerfile
+dockerfile
 # syntax=docker/dockerfile:1.7
 
 FROM codercom/code-server:4.137.0
@@ -46,4 +46,4 @@ EXPOSE 8080
 ENTRYPOINT ["code-server"]
 
 CMD ["--bind-addr", "0.0.0.0:8080", "--auth", "password"]
-```
+
