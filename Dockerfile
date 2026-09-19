@@ -1,3 +1,4 @@
+```dockerfile
 # syntax=docker/dockerfile:1.7
 
 FROM codercom/code-server:4.137.0
@@ -28,9 +29,13 @@ RUN --mount=type=secret,id=JFROG_USERNAME \
     --index-url "https://${JFROG_USERNAME_ENCODED}:${JFROG_TOKEN}@mukti.jfrog.io/artifactory/api/pypi/poc-pypi-virtual/simple/" \
     -r /tmp/requirements.txt
 
+USER coder
+
 RUN while read extension; do \
       code-server --install-extension "$extension"; \
     done < /tmp/extensions.txt
+
+USER root
 
 WORKDIR /opt/app
 
@@ -41,3 +46,4 @@ EXPOSE 8080
 ENTRYPOINT ["code-server"]
 
 CMD ["--bind-addr", "0.0.0.0:8080", "--auth", "password"]
+```
