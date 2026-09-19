@@ -1,3 +1,5 @@
+# syntax=docker/dockerfile:1.7
+
 FROM codercom/code-server:4.137.0
 
 USER root
@@ -16,7 +18,8 @@ ENV PATH="/opt/venv/bin:$PATH"
 
 COPY app /opt/app
 
-RUN python3 -m pip install --no-cache-dir -r /tmp/requirements.txt
+RUN --mount=type=secret,id=pip_config,target=/etc/pip.conf \
+    python3 -m pip install --no-cache-dir -r /tmp/requirements.txt
 
 RUN while read extension; do \
       code-server --install-extension "$extension"; \
