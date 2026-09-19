@@ -63,9 +63,4 @@ EXPOSE 8080
 
 ENTRYPOINT ["code-server"]
 
-CMD [
-    "--bind-addr",
-    "0.0.0.0:8080",
-    "--auth",
-    "password"
-]
+CMD ["--bind-addr", "0.0.0.0:8080", "--auth", "password"]
