@@ -17,8 +17,11 @@ COPY code-server/extensions.txt /tmp/extensions.txt
 RUN python3 -m venv /opt/venv \
  && /opt/venv/bin/python -m pip install --no-cache-dir --upgrade pip
 
-ENV PATH="/opt/venv/bin:$PATH" \
-    PYTHONPATH="/opt"
+ENV PATH="/opt/venv/bin:$PATH"
+
+RUN ln -s /opt/venv/bin/python /usr/local/bin/python
+
+ENV PYTHONPATH="/opt"
 
 # coder must own its working tree, otherwise code-server can't write to it
 COPY --chown=coder:coder app /opt/app
