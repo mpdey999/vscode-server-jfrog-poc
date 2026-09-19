@@ -22,8 +22,9 @@ RUN --mount=type=secret,id=JFROG_USERNAME \
     --mount=type=secret,id=JFROG_TOKEN \
     JFROG_USERNAME="$(cat /run/secrets/JFROG_USERNAME)" && \
     JFROG_TOKEN="$(cat /run/secrets/JFROG_TOKEN)" && \
+    JFROG_USERNAME_ENCODED="$(python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=""))' "$JFROG_USERNAME")" && \
     python3 -m pip install --no-cache-dir \
-    --index-url "https://${JFROG_USERNAME}:${JFROG_TOKEN}@mukti.jfrog.io/artifactory/api/pypi/poc-pypi-virtual/simple/" \
+    --index-url "https://${JFROG_USERNAME_ENCODED}:${JFROG_TOKEN}@mukti.jfrog.io/artifactory/api/pypi/poc-pypi-virtual/simple/" \
     -r /tmp/requirements.txt
 
 RUN while read extension; do \
