@@ -32,12 +32,12 @@ COPY --chown=coder:coder app /opt/app
 RUN --mount=type=secret,id=JFROG_USERNAME,required=true \
     --mount=type=secret,id=JFROG_TOKEN,required=true \
     set -eu \
-    && JFROG_USERNAME="$$(cat /run/secrets/JFROG_USERNAME)" \
-    && JFROG_TOKEN="$$(cat /run/secrets/JFROG_TOKEN)" \
-    && JFROG_USERNAME_ENCODED="$$(/usr/bin/python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=""))' "$$JFROG_USERNAME")" \
-    && JFROG_TOKEN_ENCODED="$$(/usr/bin/python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=""))' "$$JFROG_TOKEN")" \
+    && JFROG_USERNAME="$(cat /run/secrets/JFROG_USERNAME)" \
+    && JFROG_TOKEN="$(cat /run/secrets/JFROG_TOKEN)" \
+    && JFROG_USERNAME_ENCODED="$(/usr/bin/python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=""))' "$JFROG_USERNAME")" \
+    && JFROG_TOKEN_ENCODED="$(/usr/bin/python3 -c 'import urllib.parse,sys; print(urllib.parse.quote(sys.argv[1], safe=""))' "$JFROG_TOKEN")" \
     && /opt/venv/bin/python -m pip install --no-cache-dir \
-        --index-url "https://$${JFROG_USERNAME_ENCODED}:$${JFROG_TOKEN_ENCODED}@mukti.jfrog.io/artifactory/api/pypi/poc-pypi-virtual/simple/" \
+        --index-url "https://${JFROG_USERNAME_ENCODED}:${JFROG_TOKEN_ENCODED}@mukti.jfrog.io/artifactory/api/pypi/poc-pypi-virtual/simple/" \
         -r /tmp/requirements.txt
 
 USER coder
